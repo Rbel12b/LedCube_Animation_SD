@@ -70,7 +70,7 @@ void loop()
         if (_loop)
         {
             num = 0;
-            Data.seek(6);
+            Data.seek(9);
             return;
         }
         Serial.println("End!");
