@@ -7,7 +7,7 @@ SdFat SD;
 
 File Data;
 unsigned long int imageCount;
-unsigned long repeatCount = 1;
+unsigned long int repeatMs;
 byte image[64];
 unsigned int num = 0;
 byte _loop;
@@ -35,12 +35,12 @@ void setup()
         return;
     }
     Data.readBytes((char *)&imageCount, 4);
-    Data.readBytes((char*)&repeatCount, 1);
+    Data.readBytes((char *)&repeatMs, 4);
     Data.readBytes((char *)&_loop, 1);
     Serial.println("Image count: ");
     Serial.println(imageCount);
-    Serial.println("Repeat count: ");
-    Serial.println(repeatCount);
+    Serial.println("Repeat ms: ");
+    Serial.println(repeatMs);
     Serial.println("Loop Around: ");
     Serial.println(_loop ? "true" : "false");
 }
@@ -59,7 +59,8 @@ void loop()
     }
     else
     {
-        for (unsigned int i = 0; i < (repeatCount + 1) * 2; i++)
+        auto start = millis();
+        while (millis() - start < repeatMs)
         {
             Cube.print(image);
         }
